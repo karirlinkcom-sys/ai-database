@@ -13,10 +13,230 @@
   },
   {
     "question": "halo",
-    "answer": "Halo! Ã°ÂÂÂ Senang sekali bisa menyambut Anda di sini!  Ada yang bisa saya bantu hari ini? Saya siap membantu dengan berbagai pertanyaan, percakapan, atau hal lain yang Anda butuhkan. Ã°ÂÂÂ  Silakan ajukan apa saja - apakah itu tentang informasi, belajar sesuatu, bantuan menulis, atau sekadar ingin mengobrol!"
+    "answer": "Halo! 👋 Senang sekali bisa menyambut Anda di sini! Ada yang bisa saya bantu hari ini? Saya siap membantu dengan berbagai pertanyaan, percakapan, atau hal lain yang Anda butuhkan. 😊 Silakan ajukan apa saja - apakah itu tentang informasi, belajar sesuatu, bantuan menulis, atau sekadar ingin mengobrol!"
   },
   {
     "question": "berapa hasil 1+1",
-    "answer": "Hasil dari 1 + 1 adalah 2.  Kalau mau penjelasan lebih lanjut, ini contoh sederhananya: Jika kamu punya 1 apel, lalu ditambah 1 apel lagi, maka sekarang kamu punya 2 apel ð.  Ada pertanyaan lain?"
+    "answer": "Hasil dari 1 + 1 adalah 2. Kalau mau penjelasan lebih lanjut, ini contoh sederhananya: Jika kamu punya 1 apel, lalu ditambah 1 apel lagi, maka sekarang kamu punya 2 apel 😊. Ada pertanyaan lain?"
+  },
+  {
+    "question": "selamat pagi",
+    "answer": "Selamat pagi! 🌅 Semoga hari Anda menyenangkan dan penuh semangat! Ada yang bisa saya bantu pagi ini?"
+  },
+  {
+    "question": "selamat siang",
+    "answer": "Selamat siang! ☀️ Semoga harimu berjalan lancar. Butuh bantuan dengan sesuatu?"
+  },
+  {
+    "question": "selamat malam",
+    "answer": "Selamat malam! 🌙 Sudah waktunya beristirahat. Semoga mimpi indah menyertai tidurmu!"
+  },
+  {
+    "question": "terima kasih",
+    "answer": "Sama-sama! 😊 Senang bisa membantu. Kalau ada pertanyaan lain, jangan ragu untuk bertanya ya!"
+  },
+  {
+    "question": "baik",
+    "answer": "Bagus sekali! 😄 Ada yang bisa saya bantu lagi?"
+  },
+  {
+    "question": "bisa bantu apa",
+    "answer": "Saya bisa membantu dengan: 1) Menjawab pertanyaan umum, 2) Memberikan informasi, 3) Membantu belajar hal baru, 4) Percakapan sehari-hari, 5) Tips dan trik praktis. Silakan tanya apa saja!"
+  },
+  {
+    "question": "apa itu ai",
+    "answer": "AI (Artificial Intelligence) adalah kecerdasan buatan yang dibuat oleh manusia untuk meniru kemampuan berpikir manusia. Contohnya seperti saya! 🤖 AI bisa belajar, mengenali pola, dan menyelesaikan tugas tertentu."
+  },
+  {
+    "question": "apa itu machine learning",
+    "answer": "Machine Learning adalah cabang AI di mana komputer belajar dari data tanpa diprogram secara eksplisit. Contoh: rekomendasi Netflix, deteksi spam email, dan asisten virtual seperti saya!"
+  },
+  {
+    "question": "cara belajar programming",
+    "answer": "Tips belajar programming: 1) Mulai dari dasar (HTML/CSS), 2) Praktek setiap hari, 3) Buat proyek kecil, 4) Bergabung di komunitas, 5) Jangan takut salah. Mau belajar bahasa pemrograman apa?"
+  },
+  {
+    "question": "apa itu javascript",
+    "answer": "JavaScript adalah bahasa pemrograman untuk web yang membuat halaman website menjadi interaktif. Bisa digunakan di frontend dan backend (Node.js). Sangat populer dan powerful!"
+  },
+  {
+    "question": "apa itu python",
+    "answer": "Python adalah bahasa pemrograman yang mudah dipahami, sering digunakan untuk data science, AI, web development, dan automation. Sintaksnya bersih dan readable."
+  },
+  {
+    "question": "cara membuat website",
+    "answer": "Langkah membuat website: 1) Belajar HTML (struktur), 2) CSS (tampilan), 3) JavaScript (interaksi), 4) Pilih hosting & domain, 5) Upload file. Mau buat website jenis apa?"
+  },
+  {
+    "question": "tips belajar efektif",
+    "answer": "Teknik belajar efektif: 1) Pomodoro (25 menit belajar, 5 menit istirahat), 2) Spaced repetition, 3) Active recall, 4) Buat ringkasan visual, 5) Cari lingkungan yang kondusif."
+  },
+  {
+    "question": "cara menghilangkan stres",
+    "answer": "Untuk mengurangi stres: 1) Tarik napas dalam, 2) Olahraga ringan, 3) Dengarkan musik, 4) Curhat dengan teman, 5) Istirahat yang cukup. Jangan lupa self-care! 💆‍♂️"
+  },
+  {
+    "question": "rekomendasi film bagus",
+    "answer": "Beberapa rekomendasi film: Drama: The Shawshank Redemption, Comedy: Forrest Gump, Sci-fi: Inception, Indonesia: Laskar Pelangi. Mau genre apa nih?"
+  },
+  {
+    "question": "ceritakan lelucon",
+    "answer": "Kenapa programmer tidak bisa membedakan Halloween dan Christmas? Karena OCT 31 sama dengan DEC 25! 😄 Ada yang lucu lagi nggak?"
+  },
+  {
+    "question": "apa makanan sehat",
+    "answer": "Makanan sehat: 1) Sayuran hijau, 2) Buah-buahan, 3) Protein (ikan, ayam, tahu), 4) Karbohidrat kompleks (nasi merah, oats), 5) Minum air putih yang cukup. Jangan lupa sarapan!"
+  },
+  {
+    "question": "cara memasak nasi",
+    "answer": "Cara masak nasi: 1) Cuci beras sampai air bening, 2) Takaran air: 1:1.5 (beras:air), 3) Masak di rice cooker sampai tombol pindah ke 'warm', 4) Aduk dan biarkan 5 menit sebelum disajikan."
+  },
+  {
+    "question": "olahraga yang mudah",
+    "answer": "Olahraga mudah untuk pemula: 1) Jalan kaki 30 menit/hari, 2) Push-up, 3) Sit-up, 4) Squat, 5) Yoga ringan. Mulai pelan-pelan dan konsisten!"
+  },
+  {
+    "question": "cara hemat uang",
+    "answer": "Tips hemat uang: 1) Catat pengeluaran, 2) Buat anggaran bulanan, 3) Bedakan needs vs wants, 4) Menabung otomatis, 5) Cari promo dan diskon. Small steps matter! 💰"
+  },
+  {
+    "question": "bahasa inggrisnya halo",
+    "answer": "Bahasa Inggrisnya 'halo' adalah 'hello'! 😊 Mau belajar frasa bahasa Inggris lainnya?"
+  },
+  {
+    "question": "berapa luas indonesia",
+    "answer": "Luas Indonesia adalah sekitar 1.904.569 km², terdiri dari 17.000+ pulau. Negara kepulauan terbesar di dunia! 🌏"
+  },
+  {
+    "question": "ibukota indonesia",
+    "answer": "Ibu kota Indonesia adalah Jakarta, tapi akan pindah ke Nusantara di Kalimantan Timur. Spesifiknya di Penajam Paser Utara, Kalimantan Timur."
+  },
+  {
+    "question": "presiden indonesia sekarang",
+    "answer": "Presiden Indonesia saat ini adalah Joko Widodo (Jokowi). Beliau menjabat sejak 2014 dan terpilih kembali untuk periode 2019-2024."
+  },
+  {
+    "question": "cara reset password wifi",
+    "answer": "Biasanya: 1) Cari tombol reset di router, 2) Tekan 10-30 detik sampai lampu berkedip, 3) Password default ada di sticker router. Atau login ke 192.168.1.1"
+  },
+  {
+    "question": "komputer lambat bagaimana",
+    "answer": "Coba solusi ini: 1) Restart komputer, 2) Hapus file temporary, 3) Cek program yang berjalan di background, 4) Upgrade RAM jika perlu, 5) Scan malware/virus."
+  },
+  {
+    "question": "error syntax di python",
+    "answer": "Untuk error syntax: 1) Periksa tanda baca (titik koma, kurung), 2) Cek indentasi, 3) Pastikan string ditutup dengan quotes, 4) Gunakan IDE dengan syntax highlighting."
+  },
+  {
+    "question": "apa itu github",
+    "answer": "GitHub adalah platform untuk developer menyimpan, mengelola, dan berkolaborasi pada kode proyek. Menggunakan sistem Git untuk version control. Sangat penting untuk programmer!"
+  },
+  {
+    "question": "cara install windows",
+    "answer": "Langkah instal Windows: 1) Download ISO dari Microsoft, 2) Buat bootable USB, 3) Backup data penting, 4) Boot dari USB, 5) Ikuti wizard instalasi. Hati-hati dengan partisi!"
+  },
+  {
+    "question": "apa itu html",
+    "answer": "HTML (HyperText Markup Language) adalah bahasa markup untuk membuat struktur halaman web. Seperti kerangka bangunan untuk website. Dasar yang wajib dipahami web developer!"
+  },
+  {
+    "question": "apa itu css",
+    "answer": "CSS (Cascading Style Sheets) adalah bahasa untuk mendesain tampilan website. Mengatur warna, layout, font, dan animasi. HTML untuk struktur, CSS untuk penampilan!"
+  },
+  {
+    "question": "cuaca hari ini",
+    "answer": "Saya tidak bisa akses data cuaca real-time, tapi kamu bisa cek di: 1) BMKG (badan meteorologi), 2) Weather app, 3) Google 'cuaca [kota-mu]'. Stay safe! ☔"
+  },
+  {
+    "question": "rekomendasi buku",
+    "answer": "Rekomendasi buku: Non-fiksi: Atomic Habits, Fiction: Laskar Pelangi, Tech: Clean Code, Self-help: The 7 Habits. Mau genre khusus apa?"
+  },
+  {
+    "question": "cara meditasi",
+    "answer": "Meditasi untuk pemula: 1) Cari tempat tenang, 2) Duduk nyaman, 3) Fokus pada napas, 4) Mulai 5 menit/hari, 5) Jangan kritik pikiran yang muncul. Practice makes perfect! 🧘"
+  },
+  {
+    "question": "bahasa pemrograman terpopuler",
+    "answer": "Bahasa populer 2024: 1) JavaScript, 2) Python, 3) Java, 4) C#, 5) PHP. Pilih sesuai kebutuhan: Web (JS), Data (Python), Enterprise (Java)."
+  },
+  {
+    "question": "cara membuat cv",
+    "answer": "Tips CV menarik: 1) Design bersih & profesional, 2) Highlight skill relevan, 3) Gunakan angka (hasil achieved), 4) Sesuaikan dengan job desc, 5) Proofread sebelum kirim. Good luck! 📄"
+  },
+  {
+    "question": "olahraga pagi",
+    "answer": "Olahraga pagi terbaik: 1) Jogging ringan, 2) Senam peregangan, 3) Yoga, 4) Bersepeda, 5) Lompat tali. Bangun metabolisme dan semangat seharian! 🌅"
+  },
+  {
+    "question": "tidak bisa tidur",
+    "answer": "Untuk susah tidur: 1) Hindari gadget 1 jam sebelum tidur, 2) Baca buku, 3) Minum teh chamomile, 4) Atur suhu ruangan nyaman, 5) Meditasi atau deep breathing. Semoga cepat tidur! 😴"
+  },
+  {
+    "question": "cara berhenti merokok",
+    "answer": "Tips berhenti merokok: 1) Tetapkan tanggal berhenti, 2) Cari pengganti (permen, buah), 3) Hindari pemicu, 4) Minta dukungan keluarga, 5) Konsultasi dokter jika perlu. You can do it! 💪"
+  },
+  {
+    "question": "resep makanan sederhana",
+    "answer": "Resep telur dadar: 1) Kocok 2 telur, 2) Tambah garam & merica, 3) Panaskan minyak, 4) Tuang telur, 5) Masak sampai matang. Bisa tambah daun bawang atau keju! 🍳"
+  },
+  {
+    "question": "cara menabung yang baik",
+    "answer": "Strategi menabung: 1) Pay yourself first (sisihkan 20% gaji), 2) Gunakan celengan digital, 3) Buat target spesifik, 4) Hindari impulsive buying, 5) Investasi kecil-kecilan. Future you will thank you! 🐖"
+  },
+  {
+    "question": "perbedaan ai dan manusia",
+    "answer": "Perbedaan utama: AI cepat proses data & konsisten, manusia punya kreativitas & empati. AI belajar dari data, manusia belajar dari pengalaman. Kita saling melengkapi! 🤝"
+  },
+  {
+    "question": "apa itu deep learning",
+    "answer": "Deep Learning adalah jenis machine learning menggunakan neural networks dengan banyak layer. Bagus untuk tugas kompleks seperti pengenalan gambar, suara, dan bahasa alami."
+  },
+  {
+    "question": "cara menjaga lingkungan",
+    "answer": "Jaga lingkungan: 1) Kurangi plastik sekali pakai, 2) Daur ulang sampah, 3) Hemat listrik & air, 4) Tanam pohon, 5) Gunakan transportasi umum. Small actions, big impact! 🌱"
+  },
+  {
+    "question": "tutorial git basic",
+    "answer": "Git basic commands: 1) git init (start repo), 2) git add (stage changes), 3) git commit (save changes), 4) git push (upload to remote), 5) git pull (download changes). Essential untuk developer!"
+  },
+  {
+    "question": "cara presentasi yang baik",
+    "answer": "Tips presentasi: 1) Kenali audience, 2) Struktur jelas (pembuka-isi-penutup), 3) Visual menarik, 4) Praktek sebelumnya, 5) Kontak mata dengan penonton. You'll rock it! 🎤"
+  },
+  {
+    "question": "motivasi belajar",
+    "answer": "Motivasi belajar: Ingat tujuan besar, rayakan progress kecil, cari teman belajar, istirahat cukup, dan percaya proses. Setiap expert pernah jadi pemula! 🚀"
+  },
+  {
+    "question": "apa itu blockchain",
+    "answer": "Blockchain adalah teknologi penyimpanan data terdesentralisasi & transparan. Dasar cryptocurrency seperti Bitcoin. Secure karena data tersebar di banyak komputer."
+  },
+  {
+    "question": "cara investasi saham",
+    "answer": "Investasi saham untuk pemula: 1) Pelajari dasar-dasar, 2) Mulai dengan modal kecil, 3) Diversifikasi portfolio, 4) Investasi jangka panjang, 5) Gunakan aplikasi sekuritas terpercaya. Do your research! 📈"
+  },
+  {
+    "question": "tips wawancara kerja",
+    "answer": "Tips wawancara: 1) Research perusahaan, 2) Persiapan jawaban umum, 3) Bawa portofolio/cv, 4) Tanya pertanyaan smart, 5) Follow up setelah wawancara. Break a leg! 💼"
+  },
+  {
+    "question": "cara membuat kopi enak",
+    "answer": "Buat kopi enak: 1) Gunakan biji segar, 2) Air 90-96°C, 3) Takaran 15g kopi : 250ml air, 4) Seduh 3-4 menit, 5) Sesuaikan dengan selera. Enjoy your coffee! ☕"
+  },
+  {
+    "question": "apa itu cloud computing",
+    "answer": "Cloud computing adalah layanan komputasi via internet (server, storage, database). Contoh: AWS, Google Cloud, Azure. Fleksibel, scalable, dan cost-efficient untuk bisnis."
+  },
+  {
+    "question": "cara menulis blog",
+    "answer": "Tips nulis blog: 1) Pilih niche spesifik, 2) Buat outline sebelum nulis, 3) Gunakan bahasa mudah dipahami, 4) Tambah gambar relevan, 5) SEO optimization. Your voice matters! ✍️"
+  },
+  {
+    "question": "perbedaan http dan https",
+    "answer": "HTTPS = HTTP + Encryption (SSL/TLS). HTTPS lebih secure karena data dienkripsi. Wajib untuk website yang handle data sensitif seperti login & payment."
+  },
+  {
+    "question": "cara menjaga kesehatan mental",
+    "answer": "Jaga kesehatan mental: 1) Self-care rutin, 2) Terhubung dengan orang terdekat, 3) Batasi media sosial, 4) Cari hobi menyenangkan, 5) Jangan ragu minta bantuan profesional. Your mental health matters! 💚"
   }
 ]
