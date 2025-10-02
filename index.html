@@ -1,504 +1,538 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Belajar dari GitHub & Pastebin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Pembelajar Final</title>
     <style>
+        /* === BAGIAN CSS DIMULAI === */
         :root {
-            --primary-color: #6f42c1;
-            --primary-light: #8a6cdf;
-            --primary-dark: #5a32a3;
-            --bg-color: #f7f9fc;
-            --card-bg: #ffffff;
-            --text-primary: #1a1a1a;
-            --text-secondary: #6c757d;
-            --border-color: #e1e5eb;
-            --ai-message-bg: #f0f4ff;
-            --user-message-bg: #6f42c1;
-            --user-message-text: #ffffff;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --primary-color: #1a73e8;
+            --primary-light: #e8f0fe;
+            --bg-white: #ffffff;
+            --bg-gray: #f8f9fa;
+            --text-dark: #202124;
+            --text-gray: #5f6368;
+            --border-color: #dadce0;
+            --ai-bg: #f8f9fa;
+            --user-bg: #1a73e8;
+            --user-text: #ffffff;
+            --shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            --hover-bg: #f1f3f4;
+            --active-bg: #e8f0fe;
+            --sidebar-bg: #f8f9fa;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 16px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            height: 90vh;
             overflow: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-            padding: 16px 20px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 600;
+        .app-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .header-icon {
-            font-size: 1.3rem;
-        }
-
-        #chat-window {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            background-color: var(--bg-color);
-        }
-
-        .message {
-            padding: 12px 16px;
-            border-radius: 18px;
-            max-width: 80%;
-            word-wrap: break-word;
-            line-height: 1.4;
+            width: 100%;
+            height: 100%;
             position: relative;
         }
 
-        .ai-message {
-            background-color: var(--ai-message-bg);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .user-message {
-            background-color: var(--user-message-bg);
-            color: var(--user-message-text);
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            margin-top: 4px;
-        }
-
-        .chat-form {
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
             display: flex;
-            padding: 16px;
-            border-top: 1px solid var(--border-color);
-            background-color: var(--card-bg);
-            gap: 10px;
+            flex-direction: column;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow);
         }
 
-        #user-input {
-            flex-grow: 1;
+        .sidebar-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-white);
+        }
+
+        .sidebar-title {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .new-chat-btn {
+            background-color: transparent;
+            color: var(--primary-color);
             border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 12px 18px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        #user-input:focus {
-            border-color: var(--primary-color);
-        }
-
-        #send-button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
+            border-radius: 16px;
+            padding: 8px 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            gap: 6px;
         }
 
-        #send-button:hover {
-            background-color: var(--primary-dark);
+        .new-chat-btn:hover {
+            background-color: var(--hover-bg);
         }
 
-        #learning-panel {
-            display: none;
-            padding: 16px;
-            background-color: #fff9e6;
-            border-top: 1px solid #ffeeba;
-            border-bottom: 1px solid #ffeeba;
+        .history-section {
+            padding: 16px 20px;
         }
 
-        .learning-title {
-            font-weight: 600;
+        .section-title {
+            font-size: 0.85rem;
+            color: var(--text-gray);
             margin-bottom: 8px;
-            color: #856404;
-        }
-
-        .learning-question {
-            margin-bottom: 12px;
-            color: #856404;
-        }
-
-        .learning-form {
-            display: flex;
-            gap: 10px;
-        }
-
-        #new-answer {
-            flex-grow: 1;
-            border: 1px solid #ffeeba;
-            border-radius: 8px;
-            padding: 10px 12px;
-            font-size: 0.95rem;
-        }
-
-        #teach-button {
-            background-color: #ffc107;
-            color: #856404;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 16px;
-            cursor: pointer;
             font-weight: 500;
-            transition: background-color 0.2s;
+            text-transform: uppercase;
         }
 
-        #teach-button:hover {
-            background-color: #e0a800;
-        }
-
-        .typing-indicator {
-            display: none;
-            align-self: flex-start;
-            background-color: var(--ai-message-bg);
+        .history-item {
             padding: 12px 16px;
-            border-radius: 18px;
-            border-bottom-left-radius: 4px;
-        }
-
-        .typing-dots {
+            border-radius: 8px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
             display: flex;
-            gap: 4px;
+            align-items: center;
+            gap: 8px;
+            position: relative;
         }
 
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: var(--text-secondary);
-            animation: typing 1.4s infinite ease-in-out;
+        .history-item:hover {
+            background-color: var(--hover-bg);
         }
 
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
+        .history-item.active {
+            background-color: var(--active-bg);
+            font-weight: 500;
         }
 
-        /* Responsive adjustments */
+        .history-icon {
+            flex-shrink: 0;
+        }
+        
+        .history-item-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+        }
+
+        .delete-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            opacity: 0;
+            transition: opacity 0.2s;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+
+        .history-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            color: #d93025;
+        }
+
+        .main-chat {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-white);
+        }
+
+        .chat-header {
+            padding: 16px 24px;
+            background-color: var(--bg-white);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-start; /* Ubah ini */
+            align-items: center;
+            box-shadow: var(--shadow);
+            z-index: 10;
+            gap: 16px; /* Tambah jarak */
+        }
+        
+        .chat-header .menu-btn {
+            display: none;
+        }
+
+        .chat-title {
+            font-weight: 500;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 16px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            animation: messageSlideIn 0.3s ease-out;
+            box-shadow: var(--shadow);
+            word-wrap: break-word;
+            margin-bottom: 16px;
+        }
+
+        .ai-message { background-color: var(--ai-bg); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .user-message { background-color: var(--user-bg); color: var(--user-text); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .message-time { font-size: 0.75rem; opacity: 0.7; margin-top: 4px; text-align: right; }
+        .ai-message .message-time { text-align: left; }
+
+        .chat-input-area { padding: 16px 24px; background-color: var(--bg-white); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px; }
+        .input-wrapper { position: relative; border: 1px solid var(--border-color); border-radius: 24px; padding: 12px 16px; display: flex; align-items: center; transition: all 0.2s; }
+        .input-wrapper:focus-within { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2); }
+        #user-input { flex-grow: 1; border: none; outline: none; resize: none; min-height: 24px; max-height: 120px; font-size: 1rem; background: transparent; }
+        #user-input:disabled { opacity: 0.6; cursor: not-allowed; }
+        .action-buttons { display: flex; gap: 8px; justify-content: flex-end; }
+        .action-btn { background-color: transparent; border: 1px solid var(--border-color); border-radius: 20px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-weight: 500; }
+        .action-btn:hover { background-color: var(--hover-bg); }
+        .action-btn.active { background-color: var(--primary-light); border-color: var(--primary-color); color: var(--primary-color); }
+        .send-btn { background-color: var(--primary-color); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); border: none; margin-left: 8px; }
+        .send-btn:hover { background-color: #1765cc; transform: scale(1.05); }
+        .sidebar-overlay { visibility: hidden; opacity: 0; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .sidebar-overlay.active { visibility: visible; opacity: 1; }
+        @keyframes messageSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         @media (max-width: 768px) {
-            .container {
-                height: 95vh;
-                max-width: 100%;
-            }
-            
-            .message {
-                max-width: 90%;
-            }
-            
-            .header {
-                font-size: 1rem;
-                padding: 14px 16px;
-            }
-            
-            #chat-window {
-                padding: 16px;
-            }
-            
-            .chat-form {
-                padding: 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .message {
-                max-width: 95%;
-                padding: 10px 14px;
-            }
-            
-            .header {
-                font-size: 0.95rem;
-            }
-            
-            .learning-form {
-                flex-direction: column;
-            }
+            .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .chat-header .menu-btn { display: block; }
+            .history-item .delete-btn { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="header">
-            <span class="header-icon">🧠</span>
-            AI Pembelajar (GitHub + Pastebin)
-        </div>
-        <div id="chat-window">
-            <div class="message ai-message">
-                Halo! Aku punya memori pribadi di GitHub dan akses ke perpustakaan umum di Pastebin. Ayo ngobrol! 👋
-                <div class="message-time">Sekarang</div>
+    <div class="app-container">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">💬 Riwayat Chat</div>
+                <button class="new-chat-btn" id="new-chat-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Obrolan baru
+                </button>
             </div>
-            <div class="typing-indicator" id="typing-indicator">
-                <div class="typing-dots">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
+            <div class="history-section">
+                <div class="section-title">Hari Ini</div>
+                <div id="today-history"></div>
+            </div>
+            <div class="history-section">
+                <div class="section-title">Kemarin</div>
+                <div id="yesterday-history"></div>
+            </div>
+            <div class="history-section">
+                <div class="section-title">7 Hari</div>
+                <div id="week-history"></div>
+            </div>
+        </div>
+
+        <div class="main-chat">
+            <div class="chat-header">
+                <button class="menu-btn" id="menu-btn">☰</button>
+                <div class="chat-title" id="chat-title">AI Pembelajar</div>
+            </div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-area">
+                <div class="input-wrapper" id="input-wrapper">
+                    <textarea id="user-input" placeholder="Kirim pesan..." rows="1"></textarea>
+                    <button class="send-btn" id="send-button">
+                        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="white"></path></svg>
+                    </button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" id="deep-search-btn">Pikir Mendalam</button>
+                    <button class="action-btn" id="search-btn">Cari</button>
                 </div>
             </div>
         </div>
-        <div id="learning-panel">
-            <div class="learning-title">💡 Bantu AI Belajar</div>
-            <div class="learning-question">Aku tidak tahu jawaban untuk: <strong id="unknown-question"></strong></div>
-            <div class="learning-form">
-                <input type="text" id="new-answer" placeholder="Ketik jawaban yang benar...">
-                <button id="teach-button">Ajari</button>
-            </div>
-        </div>
-        <form id="chat-form" class="chat-form">
-            <input type="text" id="user-input" placeholder="Ketik pertanyaanmu..." autocomplete="off" required>
-            <button type="submit" id="send-button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </form>
     </div>
 
     <script>
-    // --- KONFIGURASI ---
-    // !!! TOKEN GITHUB SUDAH DIHAPUS DARI SINI UNTUK KEAMANAN !!!
-    
-    // --- PASTEBIN ---
-    // GANTI DENGAN URL PASTEBIN ANDA JIKA PERLU
-    // Catatan: CORS Proxy publik mungkin tidak stabil.
-    const PASTEBIN_PUBLIC_URL = "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/sFu5WWGC"; 
+        // =================================================================
+        // === BAGIAN SCRIPT DIMULAI ===
+        // =================================================================
 
-    // --- VARIABEL GLOBAL ---
-    let knowledgeBase = [];
-    let currentUnknownQuestion = "";
-    let fileSha = "";
+        // === PENTING SEKALI! ===
+        // GANTI "NAMA-PROYEK-ANDA.vercel.app" DENGAN LINK VERCEL ANDA YANG BENAR!
+        const API_URL = 'https://NAMA-PROYEK-ANDA.vercel.app/api/github'; 
+        const PASTEBIN_PUBLIC_URL = "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/sFu5WWGC";
 
-    // --- ELEMEN DOM ---
-    const chatWindow = document.getElementById('chat-window');
-    const chatForm = document.getElementById('chat-form');
-    const userInput = document.getElementById('user-input');
-    const learningPanel = document.getElementById('learning-panel');
-    const unknownQuestionEl = document.getElementById('unknown-question');
-    const newAnswerInput = document.getElementById('new-answer');
-    const teachButton = document.getElementById('teach-button');
-    const typingIndicator = document.getElementById('typing-indicator');
-
-    // --- FUNGSI UTAMA ---
-
-    // 1. Memuat basis pengetahuan dari Serverless Function (LEBIH AMAN)
-    async function loadKnowledgeBase() {
-        const apiUrl = '/api/github'; // Alamat "kurir rahasia" kita di Vercel
-        try {
-            const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error(`Gagal mengambil data: ${response.statusText}`);
-            const data = await response.json();
-            fileSha = data.sha;
-            
-            const binaryString = atob(data.content);
-            const bytes = new Uint8Array(binaryString.length);
-            for (let i = 0; i < binaryString.length; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-            }
-            const decodedContent = new TextDecoder('utf-8').decode(bytes);
-            
-            knowledgeBase = JSON.parse(decodedContent);
-            addMessage('AI', 'Memori pribadi (GitHub) berhasil dimuat! 👍');
-        } catch (error) {
-            console.error("Error loading GitHub knowledge base:", error);
-            addMessage('AI', 'Error: Tidak bisa memuat memori pribadi. Periksa log Vercel.');
-        }
-    }
-
-    // 2. Menyimpan basis pengetahuan ke Serverless Function (LEBIH AMAN)
-    async function saveKnowledgeBase() {
-        const apiUrl = '/api/github'; // Alamat "kurir rahasia" yang sama
-        const updatedData = JSON.stringify(knowledgeBase, null, 2);
+        // === VARIABEL GLOBAL ===
+        let currentSessionId = localStorage.getItem('currentSessionId');
+        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || {};
+        let isWaitingForAnswer = false; 
+        let currentUnknownQuestion = "";
         
-        const encoder = new TextEncoder();
-        const utf8Array = encoder.encode(updatedData);
-        let binaryString = '';
-        for (let i = 0; i < utf8Array.length; i++) {
-            binaryString += String.fromCharCode(utf8Array[i]);
-        }
-        const contentBase64 = btoa(binaryString);
+        // Variabel memori AI
+        let knowledgeBase = [];
+        let fileSha = "";
 
-        const message = `AI learned: "${currentUnknownQuestion}"`;
-        const body = { message: message, content: contentBase64, sha: fileSha };
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
+        // === DOM ELEMENTS ===
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const menuBtn = document.getElementById('menu-btn');
+        const newChatBtn = document.getElementById('new-chat-btn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const todayHistory = document.getElementById('today-history');
+        const yesterdayHistory = document.getElementById('yesterday-history');
+        const weekHistory = document.getElementById('week-history');
+        const chatTitle = document.getElementById('chat-title');
+
+        // === FUNGSI INTI ===
+
+        function initializeSession() {
+            const sessions = Object.keys(chatHistory);
+            if (!currentSessionId || !chatHistory[currentSessionId]) {
+                if (sessions.length > 0) {
+                    currentSessionId = sessions.sort((a,b) => new Date(chatHistory[b].time) - new Date(chatHistory[a].time))[0];
+                } else {
+                    createNewSession();
+                }
+            }
+        }
+        
+        function createNewSession() {
+            const newId = Date.now().toString();
+            chatHistory[newId] = {
+                id: newId,
+                title: 'Obrolan baru',
+                time: new Date().toISOString(),
+                messages: [{ sender: 'AI', text: 'Halo! Mari kita mulai percakapan baru. 👋' }]
+            };
+            loadSession(newId); 
+        }
+
+        function saveHistory() {
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            localStorage.setItem('currentSessionId', currentSessionId);
+            renderHistoryList();
+        }
+
+        function addMessageToUI(sender, text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender === 'User' ? 'user-message' : 'ai-message'}`;
+            const messageContent = document.createElement('div');
+            messageContent.textContent = text;
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            msgDiv.appendChild(messageContent);
+            msgDiv.appendChild(messageTime);
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addMessageToHistory(sender, text) {
+            if (!chatHistory[currentSessionId]) return;
+            chatHistory[currentSessionId].messages.push({ sender, text });
+            if (chatHistory[currentSessionId].messages.length === 2 && chatHistory[currentSessionId].title === 'Obrolan baru') {
+                const firstUserMsg = chatHistory[currentSessionId].messages.find(m => m.sender === 'User')?.text || 'Obrolan baru';
+                chatHistory[currentSessionId].title = firstUserMsg.substring(0, 25) + (firstUserMsg.length > 25 ? '...' : '');
+            }
+            saveHistory();
+        }
+
+        function loadSession(sessionId) {
+            isWaitingForAnswer = false;
+            currentUnknownQuestion = "";
+            currentSessionId = sessionId;
+            saveHistory();
+            renderChat();
+            if (window.innerWidth <= 768) {
+                closeSidebar();
+            }
+        }
+
+        function deleteSession(sessionIdToDelete) {
+            if (!confirm(`Anda yakin ingin menghapus obrolan "${chatHistory[sessionIdToDelete].title}"?`)) {
+                return;
+            }
+            delete chatHistory[sessionIdToDelete];
+            if (currentSessionId === sessionIdToDelete) {
+                initializeSession();
+                renderChat();
+            }
+            saveHistory();
+        }
+
+        function renderChat() {
+            chatMessages.innerHTML = '';
+            const session = chatHistory[currentSessionId];
+            if (session) {
+                chatTitle.textContent = session.title;
+                session.messages.forEach(msg => {
+                    addMessageToUI(msg.sender, msg.text);
+                });
+                // Hapus duplikasi pesan
+                chatHistory[session.id].messages = session.messages.filter((msg, index, self) => 
+                    index === self.findIndex((t) => (t.sender === msg.sender && t.text === msg.text))
+                );
+            }
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function renderHistoryList() {
+            const now = new Date();
+            const today = [], yesterday = [], week = [];
+            const allSessions = Object.values(chatHistory).sort((a, b) => new Date(b.time) - new Date(a.time));
+
+            allSessions.forEach(session => {
+                const sessionDate = new Date(session.time);
+                const diffDays = (now.setHours(0,0,0,0) - sessionDate.setHours(0,0,0,0)) / (1000 * 60 * 60 * 24);
+                if (diffDays < 1) today.push(session);
+                else if (diffDays < 2) yesterday.push(session);
+                else if (diffDays <= 7) week.push(session);
             });
-            if (!response.ok) throw new Error(`Gagal menyimpan data: ${response.statusText}`);
-            const result = await response.json();
-            fileSha = result.content.sha; // Ambil SHA terbaru dari respons
-            addMessage('AI', 'Terima kasih! Aku sudah belajar dan menyimpannya di memori pribadi (GitHub). ✨');
-            console.log('Data berhasil disimpan via serverless function.');
-        } catch (error) {
-            console.error("Error saving knowledge base:", error);
-            addMessage('AI', 'Error: Gagal menyimpan pengetahuan baru ke GitHub.');
+            renderSection(today, todayHistory);
+            renderSection(yesterday, yesterdayHistory);
+            renderSection(week, weekHistory);
         }
-    }
 
-    // --- TAMBAHAN PASTEBIN ---
-    // 3. Fungsi baru untuk mencari di Pastebin
-    async function searchPastebin(question) {
-        try {
-            const response = await fetch(PASTEBIN_PUBLIC_URL);
-            if (!response.ok) return null;
-            const data = await response.text();
-            const publicKnowledge = JSON.parse(data);
-            const normalizedQuestion = question.toLowerCase().trim();
-            const found = publicKnowledge.find(item => item.question.toLowerCase().trim() === normalizedQuestion);
-            return found ? found.answer : null;
-        } catch (error) {
-            console.error("Error searching Pastebin:", error);
-            return null;
+        function renderSection(sessions, container) {
+            container.innerHTML = ''; 
+            if (sessions.length === 0) return; 
+            sessions.forEach(session => {
+                const item = document.createElement('div');
+                item.className = `history-item ${session.id === currentSessionId ? 'active' : ''}`;
+                item.innerHTML = `
+                    <span class="history-icon">💬</span>
+                    <span class="history-item-title">${session.title}</span>
+                    <button class="delete-btn">🗑️</button>
+                `;
+                item.querySelector('.delete-btn').onclick = (e) => { e.stopPropagation(); deleteSession(session.id); };
+                item.onclick = () => loadSession(session.id);
+                container.appendChild(item);
+            });
         }
-    }
 
-    // 4. Mencari jawaban (logika tidak berubah)
-    function findAnswer(question) {
-        const normalizedQuestion = question.toLowerCase().trim();
-        const found = knowledgeBase.find(item => item.question.toLowerCase().trim() === normalizedQuestion);
-        return found ? found.answer : null;
-    }
+        function openSidebar() { sidebar.classList.add('open'); sidebarOverlay.classList.add('active'); }
+        function closeSidebar() { sidebar.classList.remove('open'); sidebarOverlay.classList.remove('active'); }
 
-    // 5. Menambahkan pesan (logika tidak berubah)
-    function addMessage(sender, message) {
-        const messageEl = document.createElement('div');
-        messageEl.classList.add('message');
-        messageEl.classList.add(sender === 'User' ? 'user-message' : 'ai-message');
-        messageEl.textContent = message;
-        
-        const timeEl = document.createElement('div');
-        timeEl.classList.add('message-time');
-        const now = new Date();
-        timeEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-        
-        messageEl.appendChild(timeEl);
-        chatWindow.appendChild(messageEl);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
+        async function handleSendMessage() {
+            const userText = userInput.value.trim();
+            if (!userText) return;
 
-    // 6. Menampilkan/menyembunyikan indikator mengetik (logika tidak berubah)
-    function showTypingIndicator() {
-        typingIndicator.style.display = 'block';
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
+            addMessageToUI('User', userText);
+            addMessageToHistory('User', userText);
+            userInput.value = '';
 
-    function hideTypingIndicator() {
-        typingIndicator.style.display = 'none';
-    }
-
-    // --- EVENT LISTENER (logika tidak berubah) ---
-    chatForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const userQuestion = userInput.value.trim();
-        if (!userQuestion) return;
-
-        addMessage('User', userQuestion);
-        userInput.value = '';
-        showTypingIndicator();
-
-        setTimeout(async () => {
-            hideTypingIndicator();
-            
-            const githubAnswer = findAnswer(userQuestion);
-            const pastebinAnswer = await searchPastebin(userQuestion);
-
-            if (githubAnswer && pastebinAnswer) {
-                addMessage('AI', `${githubAnswer} (✓ Tervalidasi di perpustakaan umum)`);
-            } else if (githubAnswer && !pastebinAnswer) {
-                addMessage('AI', githubAnswer);
-            } else if (!githubAnswer && pastebinAnswer) {
-                addMessage('AI', `Aku menemukan jawabannya di perpustakaan umum: ${pastebinAnswer}`);
-                
-                currentUnknownQuestion = userQuestion;
-                unknownQuestionEl.textContent = `"${userQuestion}"`;
-                learningPanel.style.display = 'block';
-                newAnswerInput.value = pastebinAnswer;
-                newAnswerInput.focus();
+            if (isWaitingForAnswer) {
+                const newAnswer = userText;
+                knowledgeBase.push({ question: currentUnknownQuestion, answer: newAnswer });
+                await saveKnowledgeBase();
+                isWaitingForAnswer = false;
+                currentUnknownQuestion = "";
             } else {
-                addMessage('AI', 'Aku tidak menemukannya di memori pribadi maupun perpustakaan umum. 🤔');
-                currentUnknownQuestion = userQuestion;
-                unknownQuestionEl.textContent = `"${userQuestion}"`;
-                learningPanel.style.display = 'block';
-                newAnswerInput.value = '';
-                newAnswerInput.focus();
+                const userQuestion = userText;
+                const githubAnswer = findAnswer(userQuestion);
+                if (githubAnswer) {
+                    addMessageToUI('AI', githubAnswer);
+                    addMessageToHistory('AI', githubAnswer);
+                } else {
+                    const aiResponse = `Maaf, aku belum tahu jawaban untuk "${userQuestion}". Apa jawaban yang benar?`;
+                    addMessageToUI('AI', aiResponse);
+                    addMessageToHistory('AI', aiResponse);
+                    isWaitingForAnswer = true;
+                    currentUnknownQuestion = userQuestion;
+                }
             }
-        }, 1000);
-    });
-
-    teachButton.addEventListener('click', () => {
-        const newAnswer = newAnswerInput.value.trim();
-        if (!newAnswer) { alert('Jawaban tidak boleh kosong!'); return; }
-        
-        const exists = knowledgeBase.some(item => item.question.toLowerCase().trim() === currentUnknownQuestion.toLowerCase().trim());
-        if (exists) {
-            addMessage('AI', 'Pertanyaan ini sudah ada di memori pribadiku. Terima kasih! 😊');
-        } else {
-            knowledgeBase.push({ question: currentUnknownQuestion, answer: newAnswer });
-            saveKnowledgeBase();
         }
         
-        learningPanel.style.display = 'none';
-        newAnswerInput.value = '';
-    });
-
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            chatForm.dispatchEvent(new Event('submit'));
+        async function loadKnowledgeBase() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error(`Gagal mengambil data`);
+                const data = await response.json();
+                fileSha = data.sha;
+                const decodedContent = new TextDecoder('utf-8').decode(Uint8Array.from(atob(data.content), c => c.charCodeAt(0)));
+                knowledgeBase = JSON.parse(decodedContent);
+                console.log('Memori pribadi berhasil dimuat!');
+            } catch (error) {
+                console.error("Gagal memuat memori:", error);
+                const errorMsg = 'Error: Gagal memuat memori pribadi. Periksa koneksi atau URL API Anda.';
+                addMessageToUI('AI', errorMsg);
+                addMessageToHistory('AI', errorMsg);
+            }
         }
-    });
 
-    // --- INISIALISASI ---
-    document.addEventListener('DOMContentLoaded', loadKnowledgeBase);
+        async function saveKnowledgeBase() {
+            try {
+                const updatedData = JSON.stringify(knowledgeBase, null, 2);
+                const contentBase64 = btoa(new TextEncoder().encode(updatedData).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+                const body = { message: `AI learned: "${currentUnknownQuestion}"`, content: contentBase64, sha: fileSha };
+                const response = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (!response.ok) throw new Error('Gagal menyimpan data');
+                const result = await response.json();
+                fileSha = result.content.sha;
+                const successMsg = 'Terima kasih! Aku sudah belajar. ✨';
+                addMessageToUI('AI', successMsg);
+                addMessageToHistory('AI', successMsg);
+            } catch (error) {
+                console.error("Gagal menyimpan pengetahuan:", error);
+                const errorMsg = 'Error: Gagal menyimpan pengetahuan baru ke GitHub.';
+                addMessageToUI('AI', errorMsg);
+                addMessageToHistory('AI', errorMsg);
+            }
+        }
 
-</script>
+        function findAnswer(question) {
+            return knowledgeBase.find(item => item.question.toLowerCase().trim() === question.toLowerCase().trim())?.answer || null;
+        }
+
+        sendButton.addEventListener('click', handleSendMessage);
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); }
+        });
+        menuBtn.addEventListener('click', openSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+        newChatBtn.addEventListener('click', createNewSession);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeSession();
+            renderHistoryList();
+            renderChat();
+            loadKnowledgeBase();
+        });
+    </script>
 </body>
 </html>
