@@ -1,5 +1,9 @@
 {
-  "name": "ai-database-backend",
+  "name": "ai-pembelajar-backend",
   "version": "1.0.0",
-  "private": true
+  "description": "Backend API for AI Pembelajar",
+  "main": "api/github.js",
+  "dependencies": {
+    "@octokit/rest": "^19.0.13"
+  }
 }
