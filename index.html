@@ -38,14 +38,14 @@
             overflow: hidden;
         }
 
- .app-container {
+        .app-container {
             display: flex;
             width: 100%;
             height: 100%;
             position: relative;
         }
 
- .sidebar {
+        .sidebar {
             width: 280px;
             background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
@@ -57,7 +57,7 @@
             box-shadow: var(--shadow);
         }
 
- .sidebar-header {
+        .sidebar-header {
             padding: 16px 20px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -66,12 +66,12 @@
             background-color: var(--bg-white);
         }
 
- .sidebar-title {
+        .sidebar-title {
             font-weight: 500;
             font-size: 1.1rem;
         }
 
- .new-chat-btn {
+        .new-chat-btn {
             background-color: transparent;
             color: var(--primary-color);
             border: 1px solid var(--border-color);
@@ -85,15 +85,15 @@
             gap: 6px;
         }
 
- .new-chat-btn:hover {
+        .new-chat-btn:hover {
             background-color: var(--hover-bg);
         }
 
- .history-section {
+        .history-section {
             padding: 16px 20px;
         }
 
- .section-title {
+        .section-title {
             font-size: 0.85rem;
             color: var(--text-gray);
             margin-bottom: 8px;
@@ -101,7 +101,7 @@
             text-transform: uppercase;
         }
 
- .history-item {
+        .history-item {
             padding: 12px 16px;
             border-radius: 8px;
             margin-bottom: 4px;
@@ -113,27 +113,27 @@
             position: relative;
         }
 
- .history-item:hover {
+        .history-item:hover {
             background-color: var(--hover-bg);
         }
 
- .history-item.active {
+        .history-item.active {
             background-color: var(--active-bg);
             font-weight: 500;
         }
 
- .history-icon {
+        .history-icon {
             flex-shrink: 0;
         }
         
- .history-item-title {
+        .history-item-title {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             flex-grow: 1;
         }
 
- .delete-btn {
+        .delete-btn {
             position: absolute;
             right: 10px;
             top: 50%;
@@ -149,22 +149,23 @@
             flex-shrink: 0;
         }
 
- .history-item:hover.delete-btn {
+        /* ✅ FIX: Menggunakan spasi untuk menargetkan elemen anak */
+        .history-item:hover .delete-btn {
             opacity: 1;
         }
 
- .delete-btn:hover {
+        .delete-btn:hover {
             color: #d93025;
         }
 
- .main-chat {
+        .main-chat {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             background-color: var(--bg-white);
         }
 
- .chat-header {
+        .chat-header {
             padding: 16px 24px;
             background-color: var(--bg-white);
             border-bottom: 1px solid var(--border-color);
@@ -176,11 +177,16 @@
             gap: 16px; 
         }
         
- .chat-header.menu-btn {
-            display: block; 
+        /* ✅ FIX: Sembunyikan tombol menu di desktop */
+        .chat-header .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
- .chat-title {
+        .chat-title {
             font-weight: 500;
             font-size: 1.1rem;
             white-space: nowrap;
@@ -188,7 +194,7 @@
             text-overflow: ellipsis;
         }
 
- .chat-messages {
+        .chat-messages {
             flex-grow: 1;
             padding: 24px;
             overflow-y: auto;
@@ -196,7 +202,7 @@
             flex-direction: column;
         }
 
- .message {
+        .message {
             max-width: 80%;
             padding: 16px 20px;
             border-radius: 18px;
@@ -207,31 +213,33 @@
             margin-bottom: 16px;
         }
 
- .ai-message { background-color: var(--ai-bg); align-self: flex-start; border-bottom-left-radius: 4px; }
- .user-message { background-color: var(--user-bg); color: var(--user-text); align-self: flex-end; border-bottom-right-radius: 4px; }
- .message-time { font-size: 0.75rem; opacity: 0.7; margin-top: 4px; text-align: right; }
- .ai-message.message-time { text-align: left; }
+        .ai-message { background-color: var(--ai-bg); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .user-message { background-color: var(--user-bg); color: var(--user-text); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .message-time { font-size: 0.75rem; opacity: 0.7; margin-top: 4px; text-align: right; }
+        .ai-message .message-time { text-align: left; }
 
- .chat-input-area { padding: 16px 24px; background-color: var(--bg-white); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px; }
- .input-wrapper { position: relative; border: 1px solid var(--border-color); border-radius: 24px; padding: 12px 16px; display: flex; align-items: center; transition: all 0.2s; }
- .input-wrapper:focus-within { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2); }
+        .chat-input-area { padding: 16px 24px; background-color: var(--bg-white); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px; }
+        .input-wrapper { position: relative; border: 1px solid var(--border-color); border-radius: 24px; padding: 12px 16px; display: flex; align-items: center; transition: all 0.2s; }
+        .input-wrapper:focus-within { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2); }
         #user-input { flex-grow: 1; border: none; outline: none; resize: none; min-height: 24px; max-height: 120px; font-size: 1rem; background: transparent; }
         #user-input:disabled { opacity: 0.6; cursor: not-allowed; }
- .action-buttons { display: flex; gap: 8px; justify-content: flex-end; }
- .action-btn { background-color: transparent; border: 1px solid var(--border-color); border-radius: 20px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-weight: 500; }
- .action-btn:hover { background-color: var(--hover-bg); }
- .action-btn.active { background-color: var(--primary-light); border-color: var(--primary-color); color: var(--primary-color); }
- .send-btn { background-color: var(--primary-color); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); border: none; margin-left: 8px; }
- .send-btn:hover { background-color: #1765cc; transform: scale(1.05); }
- .sidebar-overlay { visibility: hidden; opacity: 0; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; transition: opacity 0.3s ease, visibility 0.3s ease; }
- .sidebar-overlay.active { visibility: visible; opacity: 1; }
+        .action-buttons { display: flex; gap: 8px; justify-content: flex-end; }
+        .action-btn { background-color: transparent; border: 1px solid var(--border-color); border-radius: 20px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-weight: 500; }
+        .action-btn:hover { background-color: var(--hover-bg); }
+        .action-btn.active { background-color: var(--primary-light); border-color: var(--primary-color); color: var(--primary-color); }
+        .send-btn { background-color: var(--primary-color); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); border: none; margin-left: 8px; }
+        .send-btn:hover { background-color: #1765cc; transform: scale(1.05); }
+        .sidebar-overlay { visibility: hidden; opacity: 0; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .sidebar-overlay.active { visibility: visible; opacity: 1; }
         @keyframes messageSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
-     .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); }
-     .sidebar.open { transform: translateX(0); }
-     .chat-header.menu-btn { display: block; }
-     .history-item.delete-btn { opacity: 0.5; }
+            .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            /* ✅ FIX: Tampilkan tombol menu di mobile */
+            .chat-header .menu-btn { display: block; }
+            /* ✅ FIX: Tampilkan tombol hapus secara permanen di mobile (lebih mudah diakses) */
+            .history-item .delete-btn { opacity: 0.5; }
         }
     </style>
 </head>
@@ -288,25 +296,25 @@
 
         // === KONFIGURASI DAN VARIABEL GLOBAL VSM ===
         // PASTIKAN API_URL INI ADALAH ALAMAT VERCEL API ANDA YANG BENAR
-        const API_URL = 'https://tandemai.vercel.app/api/github'; 
+        const API_URL = 'https://tandemaiv1.vercel.app/api/github'; 
         const THRESHOLD = 0.7; // Ambang batas kemiripan Cosine Similarity (0.0 - 1.0)
 
         // Variabel Riwayat Chat
         let currentSessionId = localStorage.getItem('currentSessionId');
-        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) |
-
-| {};
+        // ✅ FIX: Menggunakan operator || (logical OR)
+        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || {};
         let isWaitingForAnswer = false; 
         let currentUnknownQuestion = "";
         
-        // Variabel Memori AI VSM (DIPERBAIKI: Menggunakan array kosong)
-        let knowledgeBase =; 
+        // Variabel Memori AI VSM
+        // ✅ FIX: Inisialisasi sebagai array kosong
+        let knowledgeBase = []; 
         let fileSha = ""; 
         
-        let globalVocabulary =; 
-        let allReferenceDocs =; 
-        let knowledgeVectors =; 
-        let documentMap =; 
+        let globalVocabulary = []; 
+        let allReferenceDocs = []; 
+        let knowledgeVectors = []; 
+        let documentMap = []; 
 
         // === DOM ELEMENTS (Tidak Berubah) ===
         const chatMessages = document.getElementById('chat-messages');
@@ -336,7 +344,7 @@
             "diri", "dirinya", "enggak", "enggaknya", "entah", "entahlah", "hal", "hampir", "hanya", "hanyalah", "harus", "haruslah", "harusnya", 
             "hendak", "hendaklah", "hingga", "ia", "ialah", "ibarat", "ini", "inikah", "inilah", "itu", "itukah", "itulah", "jadi", "jadilah", 
             "juga", "jumlah", "justru", "kala", "kalau", "kapan", "kapankah", "karena", "karenanya", "ke", "kecil", "kemudian", "kenapa", 
-            "kepadanya", "kepadanya", "kini", "kinilah", "kira", "kiranya", "kita", "kitalah", "lagi", "lagipula", "lain", "lainnya", "lalu", 
+            "kepadanya", "kini", "kinilah", "kira", "kiranya", "kita", "kitalah", "lagi", "lagipula", "lain", "lainnya", "lalu", 
             "lama", "lamanya", "lebih", "macam", "maka", "makanya", "malah", "mampu", "mampukah", "mana", "manakah", "manapun", "mau", "maupun", 
             "membuat", "mempergunakan", "memperbuat", "mereka", "merekalah", "merupakan", "meski", "meskipun", "meyakinkan", "mulai", 
             "mungkinkah", "nanti", "nantinya", "nya", "oleh", "olehkah", "orang", "para", "pasti", "pastilah", "patut", "per", "perlu", "perlukah", 
@@ -352,12 +360,9 @@
         // === FUNGSI UTILITY VSM (VEKTORISASI DAN KEMIRIPAN) ===
 
         function preprocessText(text) {
-            // 1. Normalisasi ke huruf kecil & Hapus tanda baca/angka
             const cleanedText = text.toLowerCase().replace(/[^a-z\s]/g, '');
-            // 2. Tokenisasi
             const tokens = cleanedText.split(/\s+/).filter(token => token.length > 1);
-            // 3. Stopword Removal
-            return tokens.filter(token =>!stopWordsID.includes(token));
+            return tokens.filter(token => !stopWordsID.includes(token));
         }
 
         function createDictionary(allDocs) {
@@ -389,9 +394,8 @@
         }
 
         function cosineSimilarity(vec1, vec2) {
-            if (vec1.length!== vec2.length |
-
-| vec1.length === 0) return 0;
+            // ✅ FIX: Menggunakan operator || (logical OR)
+            if (vec1.length !== vec2.length || vec1.length === 0) return 0;
             
             let dotProduct = 0;
             let magnitudeA = 0;
@@ -406,31 +410,26 @@
             magnitudeA = Math.sqrt(magnitudeA);
             magnitudeB = Math.sqrt(magnitudeB);
 
-            if (magnitudeA === 0 |
-
-| magnitudeB === 0) {
+            // ✅ FIX: Menggunakan operator || (logical OR)
+            if (magnitudeA === 0 || magnitudeB === 0) {
                 return 0;
             }
 
             return dotProduct / (magnitudeA * magnitudeB);
         }
-
-        // FUNGSI INTI VSM: Mencari jawaban terbaik menggunakan Cosine Similarity
+        
         function findBestAnswer(userQuestion) {
-            if (knowledgeVectors.length === 0 |
-
-| globalVocabulary.length === 0) return null;
+            // ✅ FIX: Menggunakan operator || (logical OR)
+            if (knowledgeVectors.length === 0 || globalVocabulary.length === 0) return null;
 
             const userTokens = preprocessText(userQuestion);
             if (userTokens.length === 0) return null;
 
-            // 1. Hitung vektor TF-IDF untuk pertanyaan pengguna (Query Vector)
             const queryVector = calculateTfIdfVector(userTokens, allReferenceDocs, globalVocabulary);
 
             let maxScore = 0;
             let bestAnswer = null;
 
-            // 2. Bandingkan Query Vector dengan semua Knowledge Vectors (Pre-calculated)
             knowledgeVectors.forEach((refVector, index) => {
                 const score = cosineSimilarity(queryVector, refVector);
                 if (score > maxScore) {
@@ -441,7 +440,6 @@
 
             console.log(`Skor Kemiripan Maksimum: ${maxScore}`);
 
-            // 3. Tentukan apakah skor tertinggi melewati ambang batas kecerdasan
             if (maxScore >= THRESHOLD) {
                 return bestAnswer;
             }
@@ -449,19 +447,15 @@
             return null; 
         }
 
-        // FUNGSI INTI VSM: Inisialisasi VSM
         function initializeVSM(data) {
             console.log('Memulai inisialisasi VSM...');
-            allReferenceDocs =;
-            documentMap =;
+            allReferenceDocs = [];
+            documentMap = [];
 
-            // 1. Flattening Knowledge Base dan Map Jawaban
             data.forEach(item => {
-                // Tambahkan pertanyaan utama
                 allReferenceDocs.push(item.question);
                 documentMap.push(item.answer);
                 
-                // Tambahkan semua variasi
                 if (item.variations && Array.isArray(item.variations)) {
                     item.variations.forEach(variation => {
                         allReferenceDocs.push(variation);
@@ -471,11 +465,9 @@
             });
             console.log(`Total dokumen referensi: ${allReferenceDocs.length}`);
 
-            // 2. Pembentukan Vocabulary Global
             globalVocabulary = createDictionary(allReferenceDocs);
             console.log(`Ukuran Vocabulary: ${globalVocabulary.length}`);
 
-            // 3. Vektorisasi Semua Dokumen Referensi (Pra-kalkulasi)
             knowledgeVectors = allReferenceDocs.map(doc => {
                 const tokens = preprocessText(doc);
                 return calculateTfIdfVector(tokens, allReferenceDocs, globalVocabulary); 
@@ -487,13 +479,15 @@
 
         function initializeSession() {
             const sessions = Object.keys(chatHistory);
-            if (!currentSessionId ||!chatHistory) {
+            if (!currentSessionId || !chatHistory[currentSessionId]) {
                 if (sessions.length > 0) {
-                    // Ambil sesi terbaru
-                    currentSessionId = sessions.sort((a,b) => new Date(chatHistory[b].time) - new Date(chatHistory[a].time));
+                    // Ambil sesi terbaru berdasarkan waktu
+                    currentSessionId = sessions.sort((a,b) => new Date(chatHistory[b].time) - new Date(chatHistory[a].time))[0];
                 } else {
                     createNewSession();
                 }
+            } else {
+                loadSession(currentSessionId);
             }
         }
         
@@ -516,28 +510,32 @@
 
         function addMessageToUI(sender, text) {
             const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${sender === 'User'? 'user-message' : 'ai-message'}`;
+            msgDiv.className = `message ${sender === 'User' ? 'user-message' : 'ai-message'}`;
+            
             const messageContent = document.createElement('div');
             messageContent.textContent = text;
+
             const messageTime = document.createElement('div');
             messageTime.className = 'message-time';
             messageTime.textContent = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            
             msgDiv.appendChild(messageContent);
             msgDiv.appendChild(messageTime);
+            
             chatMessages.appendChild(msgDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
+        // ✅ FIX: Fungsi ini sekarang menargetkan sesi yang benar
         function addMessageToHistory(sender, text) {
-            if (!chatHistory) return;
-            chatHistory.messages.push({ sender, text });
-            
-            const session = chatHistory;
-            if (session.messages.length === 2 && session.title === 'Obrolan baru') {
-                const firstUserMsg = session.messages.find(m => m.sender === 'User')?.text |
+            const session = chatHistory[currentSessionId];
+            if (!session) return;
 
-| 'Obrolan baru';
-                session.title = firstUserMsg.substring(0, 25) + (firstUserMsg.length > 25? '...' : '');
+            session.messages.push({ sender, text });
+            
+            if (session.messages.length === 2 && session.title === 'Obrolan baru') {
+                const firstUserMsg = session.messages.find(m => m.sender === 'User')?.text || 'Obrolan baru';
+                session.title = firstUserMsg.substring(0, 25) + (firstUserMsg.length > 25 ? '...' : '');
             }
             saveHistory();
         }
@@ -546,19 +544,22 @@
             isWaitingForAnswer = false;
             currentUnknownQuestion = "";
             currentSessionId = sessionId;
-            saveHistory();
+            saveHistory(); // Simpan ID sesi saat ini dan render ulang riwayat
             renderChat();
             if (window.innerWidth <= 768) {
                 closeSidebar();
             }
         }
 
+        // ✅ FIX: Fungsi ini sekarang menghapus sesi yang benar
         function deleteSession(sessionIdToDelete) {
-            if (!chatHistory) return;
-            if (!confirm(`Anda yakin ingin menghapus obrolan "${chatHistory.title}"?`)) {
+            if (!chatHistory[sessionIdToDelete]) return;
+            if (!confirm(`Anda yakin ingin menghapus obrolan "${chatHistory[sessionIdToDelete].title}"?`)) {
                 return;
             }
-            delete chatHistory;
+            
+            delete chatHistory[sessionIdToDelete];
+            
             if (currentSessionId === sessionIdToDelete) {
                 // Pindah ke sesi terakhir atau buat sesi baru
                 initializeSession();
@@ -566,9 +567,10 @@
             saveHistory();
         }
 
+        // ✅ FIX: Fungsi ini sekarang memuat sesi yang benar
         function renderChat() {
             chatMessages.innerHTML = '';
-            const session = chatHistory;
+            const session = chatHistory[currentSessionId];
             if (session) {
                 chatTitle.textContent = session.title;
                 session.messages.forEach(msg => {
@@ -580,12 +582,14 @@
 
         function renderHistoryList() {
             const now = new Date();
-            const today =, yesterday =, week =;
+            // ✅ FIX: Inisialisasi sebagai array kosong
+            const today = [], yesterday = [], week = [];
             const allSessions = Object.values(chatHistory).sort((a, b) => new Date(b.time) - new Date(a.time));
 
             allSessions.forEach(session => {
                 const sessionDate = new Date(session.time);
-                const diffDays = (now.setHours(0,0,0,0) - sessionDate.setHours(0,0,0,0)) / (1000 * 60 * 60 * 24);
+                const diffDays = (new Date(now).setHours(0,0,0,0) - new Date(sessionDate).setHours(0,0,0,0)) / (1000 * 60 * 60 * 24);
+                
                 if (diffDays < 1) today.push(session);
                 else if (diffDays < 2) yesterday.push(session);
                 else if (diffDays <= 7) week.push(session);
@@ -600,7 +604,7 @@
             if (sessions.length === 0) return; 
             sessions.forEach(session => {
                 const item = document.createElement('div');
-                item.className = `history-item ${session.id === currentSessionId? 'active' : ''}`;
+                item.className = `history-item ${session.id === currentSessionId ? 'active' : ''}`;
                 item.innerHTML = `
                     <span class="history-icon">💬</span>
                     <span class="history-item-title">${session.title}</span>
@@ -623,30 +627,25 @@
             addMessageToUI('User', userText);
             addMessageToHistory('User', userText);
             userInput.value = '';
+            userInput.style.height = 'auto'; // Reset tinggi textarea
 
             if (isWaitingForAnswer) {
-                // Mode Pembelajaran (Setelah VSM gagal)
                 const newAnswer = userText;
+                knowledgeBase.push({ question: currentUnknownQuestion, answer: newAnswer, variations: [] });
                 
-                // Tambahkan entri baru ke basis pengetahuan
-                knowledgeBase.push({ question: currentUnknownQuestion, answer: newAnswer, variations: });
-                
-                // Simpan dan hitung ulang VSM
                 await saveKnowledgeBase();
-                await loadKnowledgeBase(false); // Memuat ulang KB dan VSM
-                
+                await initializeVSM(knowledgeBase);
+
                 isWaitingForAnswer = false;
                 currentUnknownQuestion = "";
             } else {
-                // Mode Pencarian Cerdas VSM
                 const userQuestion = userText;
-                const aiResponse = findBestAnswer(userQuestion); // Gunakan fungsi VSM yang baru
+                const aiResponse = findBestAnswer(userQuestion);
 
                 if (aiResponse) {
                     addMessageToUI('AI', aiResponse);
                     addMessageToHistory('AI', aiResponse);
                 } else {
-                    // Jika VSM gagal (skor < 0.7), masuk mode pembelajaran
                     const unknownMsg = `Maaf, aku belum tahu jawaban untuk "${userQuestion}". Apa jawaban yang benar?`;
                     addMessageToUI('AI', unknownMsg);
                     addMessageToHistory('AI', unknownMsg);
@@ -656,22 +655,19 @@
             }
         }
         
-        // FUNGSI MODIFIKASI: Memuat data dan memulai VSM
         async function loadKnowledgeBase() {
             try {
                 const response = await fetch(API_URL);
-                if (!response.ok) throw new Error(`Gagal mengambil data`);
+                if (!response.ok) throw new Error(`Gagal mengambil data: ${response.statusText}`);
                 const data = await response.json();
                 fileSha = data.sha;
                 
-                // Decoding konten Base64
                 const contentBase64 = data.content.replace(/\s/g, '');
-                const decodedContent = new TextDecoder('utf-8').decode(Uint8Array.from(atob(contentBase64), c => c.charCodeAt(0)));
+                const decodedContent = decodeURIComponent(escape(window.atob(contentBase64)));
                 
                 knowledgeBase = JSON.parse(decodedContent);
                 console.log('Memori pribadi berhasil dimuat!');
 
-                // --- Tahap Kritis: Inisialisasi VSM ---
                 initializeVSM(knowledgeBase);
 
             } catch (error) {
@@ -682,13 +678,10 @@
             }
         }
 
-        // FUNGSI MODIFIKASI: Menyimpan pengetahuan baru
         async function saveKnowledgeBase() {
             try {
                 const updatedData = JSON.stringify(knowledgeBase, null, 2);
-                
-                // Mengkonversi string ke Base64 (penting untuk menangani karakter UTF-8)
-                const contentBase64 = btoa(new TextEncoder().encode(updatedData).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+                const contentBase64 = window.btoa(unescape(encodeURIComponent(updatedData)));
                 
                 const body = { message: `AI learned: "${currentUnknownQuestion}"`, content: contentBase64, sha: fileSha };
                 
@@ -701,7 +694,7 @@
                 if (!response.ok) throw new Error(`Gagal menyimpan data ke GitHub. Status: ${response.status}`);
                 
                 const result = await response.json();
-                fileSha = result.content.sha; // Update SHA untuk transaksi berikutnya
+                fileSha = result.content.sha;
                 const successMsg = 'Terima kasih! Aku sudah belajar. ✨ Pengetahuan baru sudah disimpan.';
                 addMessageToUI('AI', successMsg);
                 addMessageToHistory('AI', successMsg);
@@ -717,12 +710,18 @@
         // --- Event Listeners ---
         sendButton.addEventListener('click', handleSendMessage);
         userInput.addEventListener('keydown', (e) => {
-            // Mengatasi `Enter` untuk kirim, `Shift + Enter` untuk baris baru
-            if (e.key === 'Enter' &&!e.shiftKey) { 
+            if (e.key === 'Enter' && !e.shiftKey) { 
                 e.preventDefault(); 
                 handleSendMessage(); 
             }
         });
+
+        // Auto-resize textarea
+        userInput.addEventListener('input', () => {
+            userInput.style.height = 'auto';
+            userInput.style.height = (userInput.scrollHeight) + 'px';
+        });
+        
         menuBtn.addEventListener('click', openSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
         newChatBtn.addEventListener('click', createNewSession);
@@ -731,7 +730,6 @@
             initializeSession();
             renderHistoryList();
             renderChat();
-            // Memuat data dan memulai VSM
             loadKnowledgeBase(); 
         });
     </script>
