@@ -1,52 +1,70 @@
-// File: api/github.js
+// File: /api/github.js
 
-export default async function handler(request, response) {
-    // --- KONFIGURASI ---
-    const GITHUB_USERNAME = "karirlinkcom-sys";
-    const REPO_NAME = "ai-database";
-    const FILE_PATH = "database.json";
-    // Ambil token rahasia dari Environment Variable di Vercel
-    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+// Gunakan 'npm install @octokit/rest' jika menjalankan secara lokal
+const { Octokit } = require("@octokit/rest");
 
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
+// --- KONFIGURASI PENTING ---
+// Variabel ini akan diambil dari Environment Variables di Vercel.
+// Ini adalah cara yang benar dan aman.
+const { GITHUB_TOKEN, OWNER, REPO, FILE_PATH } = process.env;
+
+const octokit = new Octokit({ auth: GITHUB_TOKEN });
+
+export default async function handler(req, res) {
+    // ✅ FIX: Menambahkan header CORS. Ini adalah bagian paling penting yang hilang.
+    // Ini memberitahu browser bahwa frontend Anda diizinkan untuk mengakses API ini.
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Browser mengirim request 'OPTIONS' (pre-flight) sebelum PUT untuk mengecek izin CORS.
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    // Pastikan semua variabel environment telah diatur di Vercel
+    if (!GITHUB_TOKEN || !OWNER || !REPO || !FILE_PATH) {
+        return res.status(500).json({ message: "Konfigurasi server (environment variables) tidak lengkap. Harap atur GITHUB_TOKEN, OWNER, REPO, dan FILE_PATH di Vercel." });
+    }
 
     try {
-        // Jika frontend meminta untuk MEMBACA data (GET)
-        if (request.method === 'GET') {
-            const githubResponse = await fetch(apiUrl, {
-                headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+        if (req.method === 'GET') {
+            // Logika untuk MENGAMBIL konten file dari GitHub
+            const { data } = await octokit.repos.getContent({
+                owner: OWNER,
+                repo: REPO,
+                path: FILE_PATH,
             });
-            if (!githubResponse.ok) throw new Error(`GitHub API Error: ${githubResponse.statusText}`);
-            const data = await githubResponse.json();
-            response.status(200).json(data); // Kirim hasilnya kembali ke frontend
-        }
-        
-        // Jika frontend meminta untuk MENYIMPAN data (PUT)
-        else if (request.method === 'PUT') {
-            // Ambil data yang dikirim dari frontend
-            const body = request.body; 
-            
-            const githubResponse = await fetch(apiUrl, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${GITHUB_TOKEN}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-            if (!githubResponse.ok) throw new Error(`GitHub API Error: ${githubResponse.statusText}`);
-            const data = await githubResponse.json();
-            response.status(200).json(data); // Kirim hasilnya kembali ke frontend
-        }
-        
-        // Jika metodenya bukan GET atau PUT
-        else {
-            response.setHeader('Allow', ['GET', 'PUT']);
-            response.status(405).end(`Method ${request.method} Not Allowed`);
-        }
+            return res.status(200).json(data);
 
+        } else if (req.method === 'PUT') {
+            // Logika untuk MEMPERBARUI konten file di GitHub
+            const { message, content, sha } = req.body;
+
+            if (!message || !content || !sha) {
+                return res.status(400).json({ message: "Request body tidak lengkap. 'message', 'content', dan 'sha' dibutuhkan." });
+            }
+
+            const { data } = await octokit.repos.createOrUpdateFileContents({
+                owner: OWNER,
+                repo: REPO,
+                path: FILE_PATH,
+                message: message,
+                content: content,
+                sha: sha,
+            });
+            return res.status(200).json(data);
+            
+        } else {
+            // Jika metode request bukan GET atau PUT
+            res.setHeader('Allow', ['GET', 'PUT']);
+            return res.status(405).end(`Method ${req.method} Not Allowed`);
+        }
     } catch (error) {
-        console.error("Serverless function error:", error);
-        response.status(500).json({ error: error.message });
+        console.error("GitHub API Error:", error.message);
+        if (error.status === 404) {
+             return res.status(404).json({ message: `File tidak ditemukan di path: ${FILE_PATH}` });
+        }
+        return res.status(error.status || 500).json({ message: error.message });
     }
 }
