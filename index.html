@@ -55,6 +55,7 @@
             transition: transform 0.3s ease;
             z-index: 1000;
             box-shadow: var(--shadow);
+            flex-shrink: 0;
         }
 
         .sidebar-header {
@@ -148,7 +149,7 @@
             padding: 4px;
             flex-shrink: 0;
         }
-
+        
         /* ✅ FIX: Menggunakan spasi untuk menargetkan elemen anak */
         .history-item:hover .delete-btn {
             opacity: 1;
@@ -178,7 +179,7 @@
         }
         
         /* ✅ FIX: Sembunyikan tombol menu di desktop */
-        .chat-header .menu-btn {
+        .menu-btn {
             display: none;
             background: none;
             border: none;
@@ -224,11 +225,9 @@
         #user-input { flex-grow: 1; border: none; outline: none; resize: none; min-height: 24px; max-height: 120px; font-size: 1rem; background: transparent; }
         #user-input:disabled { opacity: 0.6; cursor: not-allowed; }
         .action-buttons { display: flex; gap: 8px; justify-content: flex-end; }
-        .action-btn { background-color: transparent; border: 1px solid var(--border-color); border-radius: 20px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-weight: 500; }
-        .action-btn:hover { background-color: var(--hover-bg); }
-        .action-btn.active { background-color: var(--primary-light); border-color: var(--primary-color); color: var(--primary-color); }
         .send-btn { background-color: var(--primary-color); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); border: none; margin-left: 8px; }
         .send-btn:hover { background-color: #1765cc; transform: scale(1.05); }
+        .send-btn:disabled { background-color: #a0c3ff; cursor: not-allowed; transform: none; }
         .sidebar-overlay { visibility: hidden; opacity: 0; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .sidebar-overlay.active { visibility: visible; opacity: 1; }
         @keyframes messageSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -236,9 +235,7 @@
         @media (max-width: 768px) {
             .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
-            /* ✅ FIX: Tampilkan tombol menu di mobile */
-            .chat-header .menu-btn { display: block; }
-            /* ✅ FIX: Tampilkan tombol hapus secara permanen di mobile (lebih mudah diakses) */
+            .menu-btn { display: block; }
             .history-item .delete-btn { opacity: 0.5; }
         }
     </style>
@@ -281,10 +278,7 @@
                         <svg width="20" height="20" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="white"></path></svg>
                     </button>
                 </div>
-                <div class="action-buttons">
-                    <button class="action-btn" id="deep-search-btn">Pikir Mendalam</button>
-                    <button class="action-btn" id="search-btn">Cari</button>
-                </div>
+                <div class="action-buttons"></div>
             </div>
         </div>
     </div>
@@ -295,28 +289,24 @@
         // =================================================================
 
         // === KONFIGURASI DAN VARIABEL GLOBAL VSM ===
-        // PASTIKAN API_URL INI ADALAH ALAMAT VERCEL API ANDA YANG BENAR
         const API_URL = 'https://tandemaiv1.vercel.app/api/github'; 
-        const THRESHOLD = 0.7; // Ambang batas kemiripan Cosine Similarity (0.0 - 1.0)
+        const THRESHOLD = 0.7; 
 
         // Variabel Riwayat Chat
         let currentSessionId = localStorage.getItem('currentSessionId');
-        // ✅ FIX: Menggunakan operator || (logical OR)
         let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || {};
         let isWaitingForAnswer = false; 
         let currentUnknownQuestion = "";
         
         // Variabel Memori AI VSM
-        // ✅ FIX: Inisialisasi sebagai array kosong
         let knowledgeBase = []; 
         let fileSha = ""; 
-        
         let globalVocabulary = []; 
         let allReferenceDocs = []; 
         let knowledgeVectors = []; 
         let documentMap = []; 
 
-        // === DOM ELEMENTS (Tidak Berubah) ===
+        // === DOM ELEMENTS ===
         const chatMessages = document.getElementById('chat-messages');
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
@@ -329,36 +319,10 @@
         const weekHistory = document.getElementById('week-history');
         const chatTitle = document.getElementById('chat-title');
 
-
         // === LEXICON STOPWORD BAHASA INDONESIA ===
-        const stopWordsID = [
-            "a", "ada", "adalah", "adanya", "adapun", "agak", "agar", "akan", "akankah", "akhir", "akhiri", "akhirnya", "aku", "akulah", 
-            "amat", "anda", "andalah", "antar", "antara", "antaranya", "apa", "apaan", "apabila", "apakah", "apalagi", "apatah", "artinya", 
-            "asal", "atas", "atau", "ataukah", "begini", "beginian", "beginikah", "beginilah", "begitu", "begitukah", "begitulah", "belum", 
-            "belumlah", "benar", "benarkah", "benarlah", "berada", "berakhir", "berakhirnya", "berapa", "berapakah", "berapalah", "berbagai", 
-            "berhubung", "berikan", "berikut", "berikutnya", "berjumlah", "berkali-kali", "berkata", "berkehendak", "berkenaan", "berlainan", 
-            "berlalu", "berlangsung", "berlebihan", "bermacam", "bermacam-macam", "bermaksud", "bermula", "bersama", "bersama-sama", "bersiap", 
-            "bersiap-siap", "bertanya", "berturut", "berturut-turut", "bertutur", "biar", "biarpun", "bila", "bilakah", "bisa", "bisakah", 
-            "bolehlah", "buat", "bukan", "bukankah", "cuma", "dahulu", "dalam", "dan", "dapat", "dari", "daripada", "datang", "demi", "demikian", 
-            "demikianlah", "dengan", "depan", "di", "dia", "dialah", "disini", "disinilah", "ditanyai", "ditunjuki", "dsb", "dua", "dulu", 
-            "diri", "dirinya", "enggak", "enggaknya", "entah", "entahlah", "hal", "hampir", "hanya", "hanyalah", "harus", "haruslah", "harusnya", 
-            "hendak", "hendaklah", "hingga", "ia", "ialah", "ibarat", "ini", "inikah", "inilah", "itu", "itukah", "itulah", "jadi", "jadilah", 
-            "juga", "jumlah", "justru", "kala", "kalau", "kapan", "kapankah", "karena", "karenanya", "ke", "kecil", "kemudian", "kenapa", 
-            "kepadanya", "kini", "kinilah", "kira", "kiranya", "kita", "kitalah", "lagi", "lagipula", "lain", "lainnya", "lalu", 
-            "lama", "lamanya", "lebih", "macam", "maka", "makanya", "malah", "mampu", "mampukah", "mana", "manakah", "manapun", "mau", "maupun", 
-            "membuat", "mempergunakan", "memperbuat", "mereka", "merekalah", "merupakan", "meski", "meskipun", "meyakinkan", "mulai", 
-            "mungkinkah", "nanti", "nantinya", "nya", "oleh", "olehkah", "orang", "para", "pasti", "pastilah", "patut", "per", "perlu", "perlukah", 
-            "sebagai", "sebaiknya", "sebaliknya", "secara", "sedang", "sedangkan", "sedikit", "sedikitnya", "segalanya", "segala", 
-            "segera", "sejak", "sejenak", "sekali", "sekalipun", "sekalian", "sekarang", "sekaranglah", "sekedar", "sekiranya", "sekitar", 
-            "selalu", "selama", "selama-lamanya", "selanjutnya", "seluruh", "seluruhnya", "semacam", "semula", "semulanya", "semua", "semuanya", 
-            "sendiri", "sendirinya", "seolah", "sepertinya", "seperti", "sering", "seringnya", "serta", "siapa", "siapakah", "siapapun", 
-            "sini", "saja", "sajalah", "sana", "sambil", "sampai", "sebelum", "sebelumnya", "sudah", "sudahkah", "sungguh", "sungguhpun", 
-            "supaya", "tahukah", "tanpa", "tanya", "terlalu", "terhadap", "tersebut", "tersebutlah", "tetapi", "tiada", "tidakkah", "tidaklah", 
-            "tuh", "turut", "umum", "umumnya", "untuk", "usah", "usai", "wajarlah", "yakni", "yaitu", "yang"
-        ];
+        const stopWordsID = ["a","ada","adalah","adanya","adapun","agak","agar","akan","akankah","akhir","akhiri","akhirnya","aku","akulah","amat","anda","andalah","antar","antara","antaranya","apa","apaan","apabila","apakah","apalagi","apatah","artinya","asal","atas","atau","ataukah","begini","beginian","beginikah","beginilah","begitu","begitukah","begitulah","belum","belumlah","benar","benarkah","benarlah","berada","berakhir","berakhirnya","berapa","berapakah","berapalah","berbagai","berhubung","berikan","berikut","berikutnya","berjumlah","berkali-kali","berkata","berkehendak","berkenaan","berlainan","berlalu","berlangsung","berlebihan","bermacam","bermacam-macam","bermaksud","bermula","bersama","bersama-sama","bersiap","bersiap-siap","bertanya","berturut","berturut-tutur","biar","biarpun","bila","bilakah","bisa","bisakah","bolehlah","buat","bukan","bukankah","cuma","dahulu","dalam","dan","dapat","dari","daripada","datang","demi","demikian","demikianlah","dengan","depan","di","dia","dialah","disini","disinilah","ditanyai","ditunjuki","dsb","dua","dulu","diri","dirinya","enggak","enggaknya","entah","entahlah","hal","hampir","hanya","hanyalah","harus","haruslah","harusnya","hendak","hendaklah","hingga","ia","ialah","ibarat","ini","inikah","inilah","itu","itukah","itulah","jadi","jadilah","juga","jumlah","justru","kala","kalau","kapan","kapankah","karena","karenanya","ke","kecil","kemudian","kenapa","kepadanya","kini","kinilah","kira","kiranya","kita","kitalah","lagi","lagipula","lain","lainnya","lalu","lama","lamanya","lebih","macam","maka","makanya","malah","mampu","mampukah","mana","manakah","manapun","mau","maupun","membuat","mempergunakan","memperbuat","mereka","merekalah","merupakan","meski","meskipun","meyakinkan","mulai","mungkinkah","nanti","nantinya","nya","oleh","olehkah","orang","para","pasti","pastilah","patut","per","perlu","perlukah","sebagai","sebaiknya","sebaliknya","secara","sedang","sedangkan","sedikit","sedikitnya","segalanya","segala","segera","sejak","sejenak","sekali","sekalipun","sekalian","sekarang","sekaranglah","sekedar","sekiranya","sekitar","selalu","selama","selama-lamanya","selanjutnya","seluruh","seluruhnya","semacam","semula","semulanya","semua","semuanya","sendiri","sendirinya","seolah","sepertinya","seperti","sering","seringnya","serta","siapa","siapakah","siapapun","sini","saja","sajalah","sana","sambil","sampai","sebelum","sebelumnya","sudah","sudahkah","sungguh","sungguhpun","supaya","tahukah","tanpa","tanya","terlalu","terhadap","tersebut","tersebutlah","tetapi","tiada","tidakkah","tidaklah","tuh","turut","umum","umumnya","untuk","usah","usai","wajarlah","yakni","yaitu","yang"];
 
         // === FUNGSI UTILITY VSM (VEKTORISASI DAN KEMIRIPAN) ===
-
         function preprocessText(text) {
             const cleanedText = text.toLowerCase().replace(/[^a-z\s]/g, '');
             const tokens = cleanedText.split(/\s+/).filter(token => token.length > 1);
@@ -394,42 +358,26 @@
         }
 
         function cosineSimilarity(vec1, vec2) {
-            // ✅ FIX: Menggunakan operator || (logical OR)
             if (vec1.length !== vec2.length || vec1.length === 0) return 0;
-            
-            let dotProduct = 0;
-            let magnitudeA = 0;
-            let magnitudeB = 0;
-
+            let dotProduct = 0, magnitudeA = 0, magnitudeB = 0;
             for (let i = 0; i < vec1.length; i++) {
                 dotProduct += vec1[i] * vec2[i];
                 magnitudeA += vec1[i] * vec1[i];
                 magnitudeB += vec2[i] * vec2[i];
             }
-
             magnitudeA = Math.sqrt(magnitudeA);
             magnitudeB = Math.sqrt(magnitudeB);
-
-            // ✅ FIX: Menggunakan operator || (logical OR)
-            if (magnitudeA === 0 || magnitudeB === 0) {
-                return 0;
-            }
-
+            if (magnitudeA === 0 || magnitudeB === 0) return 0;
             return dotProduct / (magnitudeA * magnitudeB);
         }
         
         function findBestAnswer(userQuestion) {
-            // ✅ FIX: Menggunakan operator || (logical OR)
             if (knowledgeVectors.length === 0 || globalVocabulary.length === 0) return null;
-
             const userTokens = preprocessText(userQuestion);
             if (userTokens.length === 0) return null;
-
             const queryVector = calculateTfIdfVector(userTokens, allReferenceDocs, globalVocabulary);
-
             let maxScore = 0;
             let bestAnswer = null;
-
             knowledgeVectors.forEach((refVector, index) => {
                 const score = cosineSimilarity(queryVector, refVector);
                 if (score > maxScore) {
@@ -437,25 +385,22 @@
                     bestAnswer = documentMap[index];
                 }
             });
-
             console.log(`Skor Kemiripan Maksimum: ${maxScore}`);
-
-            if (maxScore >= THRESHOLD) {
-                return bestAnswer;
-            }
-
+            if (maxScore >= THRESHOLD) return bestAnswer;
             return null; 
         }
 
         function initializeVSM(data) {
+            if (!Array.isArray(data)) {
+                console.error("Inisialisasi VSM gagal: data bukan array.");
+                return;
+            }
             console.log('Memulai inisialisasi VSM...');
             allReferenceDocs = [];
             documentMap = [];
-
             data.forEach(item => {
                 allReferenceDocs.push(item.question);
                 documentMap.push(item.answer);
-                
                 if (item.variations && Array.isArray(item.variations)) {
                     item.variations.forEach(variation => {
                         allReferenceDocs.push(variation);
@@ -463,32 +408,26 @@
                     });
                 }
             });
-            console.log(`Total dokumen referensi: ${allReferenceDocs.length}`);
-
             globalVocabulary = createDictionary(allReferenceDocs);
-            console.log(`Ukuran Vocabulary: ${globalVocabulary.length}`);
-
             knowledgeVectors = allReferenceDocs.map(doc => {
                 const tokens = preprocessText(doc);
                 return calculateTfIdfVector(tokens, allReferenceDocs, globalVocabulary); 
             });
-            console.log('VSM berhasil diinisialisasi. AI siap mencari jawaban semantik.');
+            console.log('VSM berhasil diinisialisasi.');
         }
 
         // === FUNGSI MANAJEMEN RIWAYAT DAN CHAT ===
-
         function initializeSession() {
             const sessions = Object.keys(chatHistory);
             if (!currentSessionId || !chatHistory[currentSessionId]) {
                 if (sessions.length > 0) {
-                    // Ambil sesi terbaru berdasarkan waktu
                     currentSessionId = sessions.sort((a,b) => new Date(chatHistory[b].time) - new Date(chatHistory[a].time))[0];
                 } else {
                     createNewSession();
+                    return; 
                 }
-            } else {
-                loadSession(currentSessionId);
             }
+            loadSession(currentSessionId);
         }
         
         function createNewSession() {
@@ -511,28 +450,21 @@
         function addMessageToUI(sender, text) {
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender === 'User' ? 'user-message' : 'ai-message'}`;
-            
             const messageContent = document.createElement('div');
             messageContent.textContent = text;
-
             const messageTime = document.createElement('div');
             messageTime.className = 'message-time';
             messageTime.textContent = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            
             msgDiv.appendChild(messageContent);
             msgDiv.appendChild(messageTime);
-            
             chatMessages.appendChild(msgDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-
-        // ✅ FIX: Fungsi ini sekarang menargetkan sesi yang benar
+        
         function addMessageToHistory(sender, text) {
             const session = chatHistory[currentSessionId];
             if (!session) return;
-
             session.messages.push({ sender, text });
-            
             if (session.messages.length === 2 && session.title === 'Obrolan baru') {
                 const firstUserMsg = session.messages.find(m => m.sender === 'User')?.text || 'Obrolan baru';
                 session.title = firstUserMsg.substring(0, 25) + (firstUserMsg.length > 25 ? '...' : '');
@@ -544,52 +476,36 @@
             isWaitingForAnswer = false;
             currentUnknownQuestion = "";
             currentSessionId = sessionId;
-            saveHistory(); // Simpan ID sesi saat ini dan render ulang riwayat
+            saveHistory();
             renderChat();
-            if (window.innerWidth <= 768) {
-                closeSidebar();
-            }
+            if (window.innerWidth <= 768) closeSidebar();
         }
-
-        // ✅ FIX: Fungsi ini sekarang menghapus sesi yang benar
+        
         function deleteSession(sessionIdToDelete) {
             if (!chatHistory[sessionIdToDelete]) return;
-            if (!confirm(`Anda yakin ingin menghapus obrolan "${chatHistory[sessionIdToDelete].title}"?`)) {
-                return;
-            }
-            
+            if (!confirm(`Anda yakin ingin menghapus obrolan "${chatHistory[sessionIdToDelete].title}"?`)) return;
             delete chatHistory[sessionIdToDelete];
-            
-            if (currentSessionId === sessionIdToDelete) {
-                // Pindah ke sesi terakhir atau buat sesi baru
-                initializeSession();
-            }
-            saveHistory();
+            if (currentSessionId === sessionIdToDelete) initializeSession();
+            else saveHistory();
         }
-
-        // ✅ FIX: Fungsi ini sekarang memuat sesi yang benar
+        
         function renderChat() {
             chatMessages.innerHTML = '';
             const session = chatHistory[currentSessionId];
             if (session) {
                 chatTitle.textContent = session.title;
-                session.messages.forEach(msg => {
-                    addMessageToUI(msg.sender, msg.text);
-                });
+                session.messages.forEach(msg => addMessageToUI(msg.sender, msg.text));
             }
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function renderHistoryList() {
             const now = new Date();
-            // ✅ FIX: Inisialisasi sebagai array kosong
             const today = [], yesterday = [], week = [];
             const allSessions = Object.values(chatHistory).sort((a, b) => new Date(b.time) - new Date(a.time));
-
             allSessions.forEach(session => {
                 const sessionDate = new Date(session.time);
-                const diffDays = (new Date(now).setHours(0,0,0,0) - new Date(sessionDate).setHours(0,0,0,0)) / (1000 * 60 * 60 * 24);
-                
+                const diffDays = (new Date(now).setHours(0,0,0,0) - new Date(sessionDate).setHours(0,0,0,0)) / 86400000;
                 if (diffDays < 1) today.push(session);
                 else if (diffDays < 2) yesterday.push(session);
                 else if (diffDays <= 7) week.push(session);
@@ -600,8 +516,13 @@
         }
 
         function renderSection(sessions, container) {
-            container.innerHTML = ''; 
-            if (sessions.length === 0) return; 
+            container.innerHTML = '';
+            const parentSection = container.parentElement;
+            if (sessions.length === 0) {
+                parentSection.style.display = 'none';
+                return;
+            }
+            parentSection.style.display = 'block';
             sessions.forEach(session => {
                 const item = document.createElement('div');
                 item.className = `history-item ${session.id === currentSessionId ? 'active' : ''}`;
@@ -618,71 +539,92 @@
 
         function openSidebar() { sidebar.classList.add('open'); sidebarOverlay.classList.add('active'); }
         function closeSidebar() { sidebar.classList.remove('open'); sidebarOverlay.classList.remove('active'); }
-
+        
+        function setProcessingState(isProcessing) {
+            userInput.disabled = isProcessing;
+            sendButton.disabled = isProcessing;
+            if(isProcessing) {
+                userInput.placeholder = "AI sedang berpikir...";
+            } else {
+                userInput.placeholder = "Kirim pesan...";
+            }
+        }
 
         async function handleSendMessage() {
             const userText = userInput.value.trim();
-            if (!userText) return;
+            if (!userText || userInput.disabled) return;
 
+            setProcessingState(true);
             addMessageToUI('User', userText);
             addMessageToHistory('User', userText);
             userInput.value = '';
-            userInput.style.height = 'auto'; // Reset tinggi textarea
+            userInput.style.height = 'auto';
+
+            // Memberi sedikit jeda agar UI terasa lebih responsif
+            await new Promise(resolve => setTimeout(resolve, 50));
 
             if (isWaitingForAnswer) {
                 const newAnswer = userText;
                 knowledgeBase.push({ question: currentUnknownQuestion, answer: newAnswer, variations: [] });
-                
                 await saveKnowledgeBase();
-                await initializeVSM(knowledgeBase);
-
+                initializeVSM(knowledgeBase);
                 isWaitingForAnswer = false;
                 currentUnknownQuestion = "";
             } else {
-                const userQuestion = userText;
-                const aiResponse = findBestAnswer(userQuestion);
-
+                const aiResponse = findBestAnswer(userText);
                 if (aiResponse) {
                     addMessageToUI('AI', aiResponse);
                     addMessageToHistory('AI', aiResponse);
                 } else {
-                    const unknownMsg = `Maaf, aku belum tahu jawaban untuk "${userQuestion}". Apa jawaban yang benar?`;
+                    const unknownMsg = `Maaf, aku belum tahu jawaban untuk "${userText}". Apa jawaban yang benar?`;
                     addMessageToUI('AI', unknownMsg);
                     addMessageToHistory('AI', unknownMsg);
                     isWaitingForAnswer = true;
-                    currentUnknownQuestion = userQuestion;
+                    currentUnknownQuestion = userText;
                 }
             }
+            setProcessingState(false);
+            userInput.focus();
         }
         
+        function utf8_to_b64(str) {
+            return window.btoa(unescape(encodeURIComponent(str)));
+        }
+
+        function b64_to_utf8(str) {
+            return decodeURIComponent(escape(window.atob(str)));
+        }
+
         async function loadKnowledgeBase() {
+            setProcessingState(true);
             try {
                 const response = await fetch(API_URL);
-                if (!response.ok) throw new Error(`Gagal mengambil data: ${response.statusText}`);
+                if (!response.ok) throw new Error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
                 const data = await response.json();
                 fileSha = data.sha;
                 
-                const contentBase64 = data.content.replace(/\s/g, '');
-                const decodedContent = decodeURIComponent(escape(window.atob(contentBase64)));
-                
-                knowledgeBase = JSON.parse(decodedContent);
+                const decodedContent = b64_to_utf8(data.content.replace(/\s/g, ''));
+                knowledgeBase = decodedContent ? JSON.parse(decodedContent) : [];
                 console.log('Memori pribadi berhasil dimuat!');
-
                 initializeVSM(knowledgeBase);
-
             } catch (error) {
                 console.error("Gagal memuat memori:", error);
-                const errorMsg = 'Error: Gagal memuat memori pribadi atau inisialisasi VSM. Periksa koneksi atau URL API Anda.';
+                const errorMsg = 'Error: Gagal memuat memori pribadi. Detail: ' + error.message;
                 addMessageToUI('AI', errorMsg);
-                addMessageToHistory('AI', errorMsg);
+                // Jangan tambahkan ke riwayat jika ini adalah pesan error saat startup
+                const session = chatHistory[currentSessionId];
+                if(session && session.messages.length > 1) {
+                    addMessageToHistory('AI', errorMsg);
+                }
+            } finally {
+                setProcessingState(false);
             }
         }
 
         async function saveKnowledgeBase() {
             try {
                 const updatedData = JSON.stringify(knowledgeBase, null, 2);
-                const contentBase64 = window.btoa(unescape(encodeURIComponent(updatedData)));
-                
+                const contentBase64 = utf8_to_b64(updatedData);
                 const body = { message: `AI learned: "${currentUnknownQuestion}"`, content: contentBase64, sha: fileSha };
                 
                 const response = await fetch(API_URL, {
@@ -698,10 +640,9 @@
                 const successMsg = 'Terima kasih! Aku sudah belajar. ✨ Pengetahuan baru sudah disimpan.';
                 addMessageToUI('AI', successMsg);
                 addMessageToHistory('AI', successMsg);
-                
             } catch (error) {
                 console.error("Gagal menyimpan pengetahuan:", error);
-                const errorMsg = `Error: Gagal menyimpan pengetahuan baru ke GitHub. Detail: ${error.message}`;
+                const errorMsg = `Error: Gagal menyimpan pengetahuan baru. Detail: ${error.message}`;
                 addMessageToUI('AI', errorMsg);
                 addMessageToHistory('AI', errorMsg);
             }
@@ -715,8 +656,7 @@
                 handleSendMessage(); 
             }
         });
-
-        // Auto-resize textarea
+        
         userInput.addEventListener('input', () => {
             userInput.style.height = 'auto';
             userInput.style.height = (userInput.scrollHeight) + 'px';
@@ -726,11 +666,9 @@
         sidebarOverlay.addEventListener('click', closeSidebar);
         newChatBtn.addEventListener('click', createNewSession);
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             initializeSession();
-            renderHistoryList();
-            renderChat();
-            loadKnowledgeBase(); 
+            await loadKnowledgeBase();
         });
     </script>
 </body>
