@@ -376,5 +376,10 @@
     "question": "saya mau tanya",
     "answer": "Tentu, silakan. Ada yang bisa saya bantu?",
     "variations": []
+  },
+  {
+    "question": "mau tanya dong",
+    "answer": "Silakan, tanyakan saja. Saya siap membantu.",
+    "variations": []
   }
 ]
