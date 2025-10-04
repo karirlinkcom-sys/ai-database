@@ -1,9 +1,9 @@
 [
   {
-  "question": "apa itu ai",
-  "answer": "AI (Kecerdasan Buatan) adalah simulasi kecerdasan manusia dalam mesin yang diprogram untuk berpikir dan belajar.",
-  "variations": ["pengertian ai", "kecerdasan buatan itu apa"]
-}
+    "question": "apa itu ai",
+    "answer": "AI (Kecerdasan Buatan) adalah simulasi kecerdasan manusia dalam mesin yang diprogram untuk berpikir dan belajar.",
+    "variations": ["pengertian ai", "kecerdasan buatan itu apa"]
+  },
   {
     "question": "siapa presiden pertama indonesia",
     "answer": "Presiden pertama Indonesia adalah Ir. Soekarno.",
