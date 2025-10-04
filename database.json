@@ -2,7 +2,10 @@
   {
     "question": "apa itu ai",
     "answer": "AI (Kecerdasan Buatan) adalah simulasi kecerdasan manusia dalam mesin yang diprogram untuk berpikir dan belajar.",
-    "variations": ["pengertian ai", "kecerdasan buatan itu apa"]
+    "variations": [
+      "pengertian ai",
+      "kecerdasan buatan itu apa"
+    ]
   },
   {
     "question": "siapa presiden pertama indonesia",
@@ -54,6 +57,11 @@
   {
     "question": "Jelaskan mengapa matahari terbit dari timur.",
     "answer": "Matahari terlihat terbit dari timur karena bumi berputar pada porosnya dari arah barat ke timur. Akibat rotasi ini, permukaan bumi yang menghadap ke arah timur akan terlebih dahulu menerima cahaya matahari saat pagi hari. Inilah sebabnya setiap pagi kita melihat matahari terbit dari arah timur.",
+    "variations": []
+  },
+  {
+    "question": "hi",
+    "answer": "Halo! Ada yang bisa saya bantu hari ini?",
     "variations": []
   }
 ]
