@@ -35,5 +35,10 @@
     "question": "halo",
     "answer": "Halo! Ada yang bisa saya bantu hari ini?",
     "variations": []
+  },
+  {
+    "question": "Apa karya fenomenal dari Andrea Hirata?",
+    "answer": "Karya fenomenal dari Andrea Hirata adalah novel \"Laskar Pelangi\". Novel ini sangat terkenal dan menjadi bestseller di Indonesia.",
+    "variations": []
   }
 ]
