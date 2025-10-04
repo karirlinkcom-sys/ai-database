@@ -2,21 +2,38 @@
   {
     "question": "siapa presiden pertama indonesia",
     "answer": "Presiden pertama Indonesia adalah Ir. Soekarno.",
-    "variations": ["presiden pertama ri", "bapak proklamator indonesia"]
+    "variations": [
+      "presiden pertama ri",
+      "bapak proklamator indonesia"
+    ]
   },
   {
     "question": "apa ibu kota indonesia",
     "answer": "Ibu kota Indonesia saat ini adalah Jakarta.",
-    "variations": ["ibu kota ri", "jakarta adalah ibu kota"]
+    "variations": [
+      "ibu kota ri",
+      "jakarta adalah ibu kota"
+    ]
   },
   {
     "question": "apa itu fotosintesis",
     "answer": "Fotosintesis adalah proses yang digunakan tanaman, alga, dan beberapa bakteri untuk mengubah cahaya matahari menjadi energi kimia.",
-    "variations": ["jelaskan fotosintesis", "proses fotosintesis"]
+    "variations": [
+      "jelaskan fotosintesis",
+      "proses fotosintesis"
+    ]
   },
   {
     "question": "siapa penemu bola lampu",
     "answer": "Bola lampu praktis yang dapat dipasarkan secara luas diciptakan oleh Thomas Edison.",
-    "variations": ["penemu lampu", "thomas edison menemukan apa"]
+    "variations": [
+      "penemu lampu",
+      "thomas edison menemukan apa"
+    ]
+  },
+  {
+    "question": "halo",
+    "answer": "Halo! Ada yang bisa saya bantu hari ini?",
+    "variations": []
   }
 ]
